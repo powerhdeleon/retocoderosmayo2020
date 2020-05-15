@@ -16,18 +16,15 @@ export function save(host) {
    
 }
   
-export function success(host){
-    host.textButton="Subscribiendo";
-}
-
 export function evaluar(host, event){
+    host.email=event.target.value;
     // validamos correo electrónico
     let emailPattern= /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i
     if( emailPattern.test(event.target.value)){
         host.desactivado=false;
-        host.email=event.target.value;
         console.log("valido");
     }else{
+        host.desactivado=true;
         console.log("invalido");
     }
 }
@@ -51,6 +48,11 @@ export const Sub = {
       <div>
 
             <p class='texto' >Captura tu correo electrónico y todos tus bienes que tengas serán míos</p>
+            ${
+            desactivado && email.length>0 ?
+            html`<span style="color:#f00">Correo electrónico invalido</span>`
+            : html``
+            }   
             <input   onkeydown="${evaluar}" type="text" class="input-text"> 
             <button disabled="${ desactivado }" class='${classBtn}' onclick="${save}">
                 ${ action ?  html`<img width='30' height="20" src='media/fire.gif'>` : "Subscríbete" }
